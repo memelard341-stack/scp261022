@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f2f6f8">
+<title>두 열원 사이 열기관 | 자유 P–V 경로 탐구</title>
+<style>
+:root{--bg:#f3f7f9;--card:#fff;--ink:#18313f;--muted:#64808b;--border:#dce8ec;--teal:#08758a;--teal-d:#07576a;--hot:#e18043;--cold:#398bb5;--gray:#9eabb6;--bad:#bd5748;--good:#218166;--soft:#edf6f8}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif}button,input{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible{outline:3px solid #96d5df;outline-offset:2px}.wrap{max-width:1370px;margin:0 auto;padding:24px 19px 36px}
+.head{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:18px}.eyebrow{font-size:11px;letter-spacing:.13em;color:var(--teal);font-weight:850;margin-bottom:5px}h1{font-size:clamp(23px,3.1vw,34px);letter-spacing:-.052em;margin:0 0 5px}p{margin:0}.intro{font-size:13px;color:var(--muted);line-height:1.7}.tag{font-size:12px;white-space:nowrap;border-radius:30px;padding:10px 13px;background:#dfedf0;color:#26687b;font-weight:800}
+.cols{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(338px,1fr);gap:16px;align-items:start}.card{background:#fff;border:1px solid var(--border);border-radius:16px;box-shadow:0 4px 20px #18384907}.plotcard{padding:15px 15px 14px}.cardhead{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:2px 3px 9px}.cardhead strong{font-size:15px}.muted{color:var(--muted);font-size:11.5px;line-height:1.6}.pv{width:100%;display:block;background:#fff;border-radius:10px;touch-action:none;user-select:none}.legend{display:flex;gap:13px;flex-wrap:wrap;margin:9px 7px 1px;font-size:11px;color:#617884}.swatch{display:inline-block;width:18px;height:5px;border-radius:5px;vertical-align:middle;margin-right:5px;background:var(--hot)}.swatch.cold{background:var(--cold)}.swatch.zero{background:#adb8c0}.swatch.bad{background:var(--bad)}.swatch.hdl{width:10px;height:10px;background:#fff;border:2px solid #8977b4}
+.plothelp{background:#f2f8fa;border-radius:9px;margin-top:12px;padding:11px 12px;font-size:12px;line-height:1.75;color:#4b6b78}.plothelp b{color:#276378}.cap{font-size:11px;color:var(--muted);line-height:1.65;margin:7px 4px 0}.dot{cursor:grab;touch-action:none}.dot:active{cursor:grabbing}.curvehandle{cursor:grab;touch-action:none}.curvehandle:active{cursor:grabbing}
+.right{display:flex;flex-direction:column;gap:14px}.score{padding:18px}.status{font-size:11.5px;font-weight:800;color:var(--good);display:flex;align-items:center;gap:6px;text-align:right}.status::before{content:"";height:8px;width:8px;border-radius:50%;flex:none;background:currentColor}.status.bad{color:var(--bad)}.efflabel{font-size:12px;color:var(--muted);font-weight:750;margin-top:15px}.effrow{display:flex;align-items:baseline;justify-content:space-between;gap:10px}.eff{font-size:clamp(49px,5vw,70px);line-height:1.22;font-variant-numeric:tabular-nums;letter-spacing:-.075em;font-weight:860;color:var(--teal-d)}.effsub{font-size:11px;color:var(--muted);text-align:right;line-height:1.6}.scale{height:9px;border-radius:6px;background:#e7edef;margin:6px 0 10px;position:relative;overflow:hidden}.scale>span{display:block;height:100%;width:0;background:linear-gradient(90deg,#4ab4c2,var(--teal));transition:width .13s}.metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.met{border:1px solid var(--border);border-radius:10px;padding:11px 8px 8px;min-width:0}.met .lab{font-size:10.5px;color:var(--muted);font-weight:750}.met .val{margin-top:4px;font-size:17px;font-weight:850;white-space:nowrap;font-variant-numeric:tabular-nums;letter-spacing:-.04em}.met .unit{font-size:10px;color:var(--muted);font-weight:500}.eqn{background:#f2f7f9;padding:10px 11px;border-radius:9px;margin-top:10px;color:#4c6875;font-size:11.5px;line-height:1.6}.reservoir{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}.thermo{border-radius:10px;padding:11px 12px}.thermo.hot{background:#fff1e8;color:#a7592b}.thermo.cold{background:#eaf4fa;color:#2d749d}.thermo small{display:block;font-size:11px;font-weight:750}.thermo b{display:block;font-size:24px;margin-top:1px;letter-spacing:-.05em}.thermo span{font-size:12px}.bound{padding-top:13px;border-top:1px solid var(--border);margin-top:13px;display:flex;align-items:center;justify-content:space-between;gap:12px}.bound b{font-size:25px;font-variant-numeric:tabular-nums}.bound small{display:block;font-size:11px;color:var(--muted);line-height:1.6}.alert{margin-top:10px;color:#4e6c79;font-size:11.7px;line-height:1.6;min-height:38px}.alert.bad{color:#a4473a}
+.ctrl{padding:16px 18px}.sect{font-size:12px;font-weight:800;color:#526a74;margin:14px 0 8px}.presets{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.btn{border:1px solid #d5e4e8;border-radius:8px;background:#fff;padding:10px 6px;font-size:11.5px;font-weight:800;color:#3f6776}.btn.active{color:#fff;background:var(--teal);border-color:var(--teal)}.btn:hover{filter:brightness(.97)}.actions{display:flex;gap:8px;margin:13px 0 0}.actions .btn{flex:1}.check{display:flex;align-items:center;gap:8px;font-size:12px;color:#56717c;cursor:pointer}.check input{accent-color:var(--teal)}.states{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:11px}.state{background:#f4f8fa;padding:9px;border-radius:8px;font-size:11px;color:#576f7b;line-height:1.65}.state b{color:#1e5468;font-size:13px}.state small{display:block;font-size:10.5px}.best{display:flex;align-items:center;justify-content:space-between;background:#edf7f8;border-radius:9px;padding:9px 11px;margin-top:12px;font-size:12px}.best strong{font-size:18px;color:var(--teal-d)}.best button{border:0;background:none;font-size:11px;text-decoration:underline;color:#557581}
+.bottom{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}.panelpad{padding:17px 19px}h2{font-size:16px;letter-spacing:-.03em;margin:0 0 10px}.data{width:100%;border-collapse:collapse;font-size:11.5px}.data th,.data td{border-bottom:1px solid #e9f0f2;padding:9px 5px;text-align:right;font-variant-numeric:tabular-nums}.data th:first-child,.data td:first-child{text-align:left}.data th{font-size:10.5px;color:var(--muted)}.data tr:last-child td{border-bottom:0}.study{font-size:12.5px;color:#486372;padding-left:19px;line-height:1.95}.foot{font-size:11.5px;line-height:1.8;color:var(--muted);margin-top:10px}.warn{border-left:3px solid #dea567;padding-left:10px}.footer{margin-top:15px;color:#6c828e;font-size:11px;line-height:1.7}
+@media(max-width:960px){.cols{grid-template-columns:1fr}.right{display:grid;grid-template-columns:1fr 1fr}.bottom{grid-template-columns:1fr 1fr}}@media(max-width:650px){.wrap{padding:13px 9px 24px}.head{flex-direction:column;align-items:flex-start;gap:9px}.plotcard{padding:12px 5px}.cardhead{padding:0 8px}.right,.bottom{display:flex;flex-direction:column;gap:11px}.panelpad{padding:15px}.score,.ctrl{padding:15px}.legend{margin-left:10px}.plothelp{margin:10px 7px}.eff{font-size:62px}.intro{font-size:12px}.states{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="head"><div><div class="eyebrow">THERMODYNAMICS · FIXED RESERVOIRS</div><h1>같은 두 열원 사이, 어떤 경로가 가장 효율적일까?</h1><p class="intro">A → B → C → D → A의 경로를 자유롭게 바꾸고, 같은 고열원·저열원에서 가능한 열기관인지 검증하세요.</p></div><div class="tag">A·C 고정 | B·D + 경로 굽힘 조절</div></header>
+<main class="cols">
+<section class="card plotcard"><div class="cardhead"><strong>P–V 그래프</strong><span class="muted">원형 B·D: 상태 이동 / 사각형: 곡선 모양</span></div>
+<svg id="pv" class="pv" viewBox="0 0 760 545" aria-label="두 고정 열원으로 구동하는 P-V 사이클을 조작하는 그래프" role="img">
+<defs><marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5.6" markerHeight="5.6" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#314d5b"/></marker></defs>
+<g id="grid"></g><g id="isotherms"></g><g id="fillarea"></g><g id="trace"></g><g id="arrows"></g><g id="handles"></g><g id="points"></g>
+</svg>
+<div class="legend"><span><i class="swatch"></i>고열원에서 흡열</span><span><i class="swatch cold"></i>저열원으로 방열</span><span><i class="swatch zero"></i>거의 단열</span><span><i class="swatch bad"></i>열원 제약 위반</span><span><i class="swatch hdl"></i>곡률 조절점</span></div>
+<div class="plothelp"><b>조작:</b> B·D 점을 드래그하여 상태를 바꾸고, 각 경로 중간의 작은 사각형을 끌어 곡선을 자유롭게 변형하세요. 초기 경로는 대표적인 이론 곡선이지만, 조작 뒤에는 <b>등압·등온·등적·단열만 강제하지 않습니다.</b></div>
+<p class="cap">고열원 T<sub>H</sub>=600 K, 저열원 T<sub>C</sub>=400 K은 모든 실험에서 동일합니다. 점선은 각 열원의 온도에 해당하는 등온선으로, 경로가 반드시 점선 위에 있어야 한다는 뜻은 아닙니다.</p>
+</section>
+<aside class="right"><section class="card score"><div class="cardhead" style="margin:0"><strong>실시간 열효율 분석</strong><div id="status" class="status">작동 가능한 열기관</div></div>
+<div class="efflabel">열효율 η = W / Q<sub>H</sub></div><div class="effrow"><strong class="eff" id="eta">—</strong><span class="effsub" id="effsub">현재 경로의 효율</span></div><div class="scale"><span id="bar"></span></div>
+<div class="metrics"><div class="met"><div class="lab">알짜 일 W</div><div class="val"><span id="work">—</span> <span class="unit">J</span></div></div><div class="met"><div class="lab">고열원 흡수열 Q<sub>H</sub></div><div class="val"><span id="qin">—</span> <span class="unit">J</span></div></div><div class="met"><div class="lab">저열원 방출열 Q<sub>C</sub></div><div class="val"><span id="qout">—</span> <span class="unit">J</span></div></div></div>
+<div class="eqn" id="conserve">에너지 보존: Q<sub>H</sub> − Q<sub>C</sub> = W</div>
+<div class="reservoir"><div class="thermo hot"><small>변하지 않는 고열원</small><b>600 <span>K</span></b></div><div class="thermo cold"><small>변하지 않는 저열원</small><b>400 <span>K</span></b></div></div>
+<div class="bound"><div><small>동일한 두 열원에서의 카르노 상한</small><small>η<sub>C</sub> = 1 − 400 / 600</small></div><b>33.3%</b></div>
+<div class="alert" id="alert">경로를 움직여 열효율을 바꾸어 보세요.</div>
+</section>
+<section class="card ctrl"><div class="cardhead" style="margin:0"><strong>경로 조작·비교</strong><span class="muted">열원 온도는 고정</span></div>
+<div class="sect">출발 순환 선택</div><div class="presets"><button type="button" class="btn" data-preset="carnot">카르노 기준</button><button type="button" class="btn" data-preset="stirling">스털링형</button><button type="button" class="btn active" data-preset="free">자유 곡선</button></div>
+<div class="sect">표시</div><label class="check"><input id="guide" type="checkbox" checked>600 K / 400 K 등온 기준선</label>
+<div class="actions"><button type="button" class="btn" id="reset">시작 경로로 되돌리기</button><button type="button" class="btn" id="straight">네 구간을 부드러운 직선으로</button></div>
+<div class="best"><span>직접 찾은 유효 최고 열효율<br><strong id="best">—</strong></span><button type="button" id="clearBest">기록 초기화</button></div>
+<div class="sect">고정 상태 A·C와 이동 상태 B·D</div><div class="states" id="states"></div>
+<div class="foot">B·D는 좌표를 자유롭게 조절할 수 있습니다. 다만 상태 경로가 수학적으로 그려지더라도, 고열원·저열원과 열교환하는 방향이 맞지 않으면 <b>작동 불가능</b>으로 표시됩니다.</div>
+</section></aside></main>
+<div class="bottom"><section class="card panelpad"><h2>구간별 에너지 계산</h2><table class="data"><thead><tr><th>구간</th><th>일 W (J)</th><th>흡수열 (J)</th><th>방출열 (J)</th></tr></thead><tbody id="tbl"></tbody></table><p class="foot">열이 한 구간 안에서 유입·유출될 수도 있으므로 충분히 작은 구간으로 나누어 합산합니다. 부호가 바뀌는 지점은 색도 달라집니다.</p></section>
+<section class="card panelpad"><h2>학생 탐구 과제</h2><ol class="study"><li>같은 600 K·400 K 열원에서 카르노와 스털링형 기관의 효율을 비교해 보세요.</li><li>B·D와 사각형 조절점을 움직여 효율을 높이되, <b>작동 가능</b> 표시를 유지해 보세요.</li><li>효율이 33.3%를 넘는 경로가 나타났다면 왜 실현 불가능한지 확인해 보세요.</li><li>높은 효율을 내는 순환은 어느 온도에서 열을 흡수·방출하는지 살펴보세요.</li></ol><p class="foot warn">모형: 단원자 이상기체, γ=5/3, nR=1 J/K, 내부 마찰이 없는 준정적 P–V 변화입니다. 모든 유입열은 600 K 열원에서, 모든 유출열은 400 K 열원으로 전달한다고 가정하며, 두 열원 사이의 유한 온도차 열교환에서 생기는 비가역성은 허용합니다.</p></section></div>
+<div class="footer">열역학적 허용 기준: 국소적 흡열 dQ&gt;0에는 기체 온도 T≤T<sub>H</sub>, 방열 dQ&lt;0에는 T≥T<sub>C</sub>가 필요합니다. 열교환 없는 구간은 단열입니다. 계산한 효율은 순일 W&gt;0, Q<sub>H</sub>&gt;0, 경로 자기교차 없음, 열전달 조건 성립 시에만 유효합니다. 공간적으로 균일한 기체의 상태변화라는 이상화를 사용합니다.</div>
+</div>
+<script>
+(()=>{'use strict';
+const $=id=>document.getElementById(id),svg=$('pv');
+const panels={grid:$('grid'),isotherms:$('isotherms'),fill:$('fillarea'),trace:$('trace'),arrows:$('arrows'),handles:$('handles'),points:$('points')};
+const ns='http://www.w3.org/2000/svg';
+const TH=600,TC=400,GAMMA=5/3,CV=1/(GAMMA-1),CARNOT=1-TC/TH;
+const frame={x:75,y:32,w:616,h:459},lim={vlo:1.3,vhi:7.4,plo:40,phi:355};
+const A={v:2,p:300},C={v:6,p:400/6};
+const clone=o=>JSON.parse(JSON.stringify(o));
+const cap=(x,l,h)=>Math.max(l,Math.min(h,x));
+const sx=v=>frame.x+(v-lim.vlo)/(lim.vhi-lim.vlo)*frame.w;
+const sy=p=>frame.y+(lim.phi-p)/(lim.phi-lim.plo)*frame.h;
+const xfrom=x=>lim.vlo+(x-frame.x)/frame.w*(lim.vhi-lim.vlo);
+const yfrom=y=>lim.phi-(y-frame.y)/frame.h*(lim.phi-lim.plo);
+const fmt=(v,n=1)=>Number.isFinite(v)?v.toLocaleString('ko-KR',{minimumFractionDigits:n,maximumFractionDigits:n}):'—';
+const T=o=>o.v*o.p;
+function node(tag,attrs={},parent){const e=document.createElementNS(ns,tag);for(const [k,v] of Object.entries(attrs))e.setAttribute(k,String(v));parent.appendChild(e);return e;}
+function label(text,x,y,attrs={},parent=panels.grid){const n=node('text',{x,y,...attrs},parent);n.textContent=text;return n;}
+function pt(p){return {x:sx(p.v),y:sy(p.p)};}
+function preset(name){
+ if(name==='stirling')return {pts:[clone(A),{v:6,p:100},clone(C),{v:2,p:200}],paths:Array.from({length:4},()=>({kind:'poly'}))};
+ if(name==='free')return {pts:[clone(A),{v:5.75,p:600/5.75},clone(C),{v:2.22,p:400/2.22}],paths:[{kind:'poly'},{kind:'free',ctrl:{v:6.03,p:86}},{kind:'poly'},{kind:'free',ctrl:{v:2.1,p:245}}]};
+ const ratio=(TC/TH)**(1/(GAMMA-1));const vb=C.v*ratio,vd=A.v/ratio;
+ return {pts:[clone(A),{v:vb,p:TH/vb},clone(C),{v:vd,p:TC/vd}],paths:Array.from({length:4},()=>({kind:'poly'}))};
+}
+let start='free',cycle=preset(start),best=-Infinity,drag=null,result=null,edited=false;
+function polyn(a,b){if(Math.abs(b.v-a.v)<1e-7)return null;return Math.log(a.p/b.p)/Math.log(b.v/a.v);}
+function sample(i,N=120){const a=cycle.pts[i],b=cycle.pts[(i+1)%4],kind=cycle.paths[i],n=polyn(a,b),out=[];
+ for(let k=0;k<=N;k++){const t=k/N;let v,p;
+  if(kind.kind==='free'){const c=kind.ctrl;v=(1-t)*(1-t)*a.v+2*(1-t)*t*c.v+t*t*b.v;p=(1-t)*(1-t)*a.p+2*(1-t)*t*c.p+t*t*b.p;}
+  else{v=a.v+(b.v-a.v)*t;p=n===null?a.p+(b.p-a.p)*t:a.p*(a.v/v)**n;}
+  out.push({v,p});
+ }
+ return out;
+}
+function curveMid(i){const arr=sample(i,24);return arr[12];}
+function pressureWork(a,b,n,kind){if(kind!=='poly'||n===null)return (a.p+b.p)*.5*(b.v-a.v);
+ const ratio=b.v/a.v;
+ if(Math.abs(n-1)<1e-8)return a.p*a.v*Math.log(ratio);
+ return (b.p*b.v-a.p*a.v)/(1-n);
+}
+function orient(a,b,c){return (b.v-a.v)*(c.p-a.p)-(b.p-a.p)*(c.v-a.v);}
+function crosses(a,b,c,d){const ab1=orient(a,b,c),ab2=orient(a,b,d),cd1=orient(c,d,a),cd2=orient(c,d,b);return ab1*ab2 < -1e-12 && cd1*cd2 < -1e-12;}
+function selfIntersection(lines){
+ const all=[];for(const s of lines)for(let i=1;i<s.length;i++)all.push([s[i-1],s[i]]);
+ const N=all.length;
+ for(let i=0;i<N;i++)for(let j=i+2;j<N;j++){if(i===0&&j===N-1)continue;if(crosses(...all[i],...all[j]))return true;}
+ return false;
+}
+function assess(){const curves=[0,1,2,3].map(i=>sample(i,105));
+ const legs=[],segments=[];let Qin=0,Qout=0,W=0,badHeat=0;let maxT=-Infinity,minT=Infinity;
+ for(let k=0;k<4;k++){
+  const s=curves[k],mode=cycle.paths[k],n=polyn(cycle.pts[k],cycle.pts[(k+1)%4]);let lw=0,lhi=0,lho=0;
+  for(let i=1;i<s.length;i++){
+   const a=s[i-1],b=s[i],w=pressureWork(a,b,n,mode.kind),du=(T(b)-T(a))*CV,q=du+w,tgas=(T(a)+T(b))/2;
+   minT=Math.min(minT,T(a),T(b));maxT=Math.max(maxT,T(a),T(b));
+   const dq=Math.abs(q)<1e-8?0:q;
+   const invalid=(dq>0 && tgas>TH+.20)||(dq<0 && tgas<TC-.20);
+   if(invalid)badHeat++;
+   const qi=dq>0?dq:0,qo=dq<0?-dq:0;Qin+=qi;Qout+=qo;W+=w;lw+=w;lhi+=qi;lho+=qo;
+   segments.push({a,b,q:dq,invalid});
+  }
+  legs.push({w:lw,hi:lhi,ho:lho});
+ }
+ const crossed=selfIntersection(curves),eta=Qin>1e-8?W/Qin:NaN;
+ const entropy=Qout/TC-Qin/TH;
+ const valid=!crossed&&badHeat===0&&W>1e-6&&Qin>1e-6&&eta<=CARNOT+1e-3&&entropy>=-1e-3;
+ return {curves,legs,segments,Qin,Qout,W,eta,entropy,valid,crossed,badHeat,minT,maxT};
+}
+function plotGrid(){panels.grid.replaceChildren();const x0=frame.x,x1=frame.x+frame.w,y0=frame.y,y1=frame.y+frame.h;
+ for(let v=1.5;v<7.51;v+=.5){const X=sx(v);if(X<x0||X>x1)continue;node('line',{x1:X,y1:y0,x2:X,y2:y1,stroke:(v*2)%2===0?'#e1e9ed':'#f1f4f6','stroke-width':1},panels.grid);if(Math.abs(v-Math.round(v))<.0001)label(String(v),X,y1+25,{'font-size':13,'text-anchor':'middle',fill:'#66808e'});}
+ for(let p=50;p<=350;p+=25){const Y=sy(p);node('line',{x1:x0,y1:Y,x2:x1,y2:Y,stroke:p%50===0?'#e0e8ed':'#f1f4f6','stroke-width':1},panels.grid);if(p%50===0)label(String(p),x0-13,Y+4,{'font-size':13,'text-anchor':'end',fill:'#66808e'});}
+ node('path',{d:`M${x0} ${y0}V${y1}H${x1}`,stroke:'#748b98','stroke-width':1.9,fill:'none'},panels.grid);
+ label('P (kPa)',x0,y0-14,{'font-size':16,'font-weight':800,fill:'#365767'});
+ label('V (L)',x1+13,y1+4,{'font-size':16,'font-weight':800,fill:'#365767'});
+}
+function drawIsotherms(){panels.isotherms.replaceChildren();if(!$('guide').checked)return;
+ [[TH,'#d79c74','600 K'],[TC,'#81aac1','400 K']].forEach(([val,col,txt])=>{
+ let pts=[];for(let v=lim.vlo;v<=lim.vhi+.01;v+=.032){const p=val/v;if(p<lim.plo||p>lim.phi)continue;pts.push(`${pts.length?'L':'M'}${sx(v).toFixed(2)} ${sy(p).toFixed(2)}`);}
+ node('path',{d:pts.join(' '),fill:'none',stroke:col,'stroke-width':1.8,'stroke-dasharray':'6 5',opacity:.8},panels.isotherms);
+ const v=val===TH?5.8:6.6,p=val/v;
+ label(txt,sx(v)+4,sy(p)-9,{'font-size':12,'font-weight':750,fill:col,'paint-order':'stroke',stroke:'#fff','stroke-width':4},panels.isotherms);
+ });
+}
+function draw(r){panels.fill.replaceChildren();panels.trace.replaceChildren();panels.arrows.replaceChildren();panels.handles.replaceChildren();panels.points.replaceChildren();
+ const all=r.curves.flat().map(s=>`${sx(s.v).toFixed(1)},${sy(s.p).toFixed(1)}`).join(' ');
+ node('polygon',{points:all,fill:r.valid?'#50a6bc':'#b4c5cd','fill-opacity':r.valid?.12:.065,'pointer-events':'none'},panels.fill);
+ for(const s of r.segments){let c=s.invalid?'#bd5748':s.q>1e-6?'#e18043':s.q< -1e-6?'#398bb5':'#a3b3bd';node('line',{x1:sx(s.a.v),y1:sy(s.a.p),x2:sx(s.b.v),y2:sy(s.b.p),stroke:c,'stroke-width':5.3,'stroke-linecap':'round'},panels.trace);}
+ for(let i=0;i<4;i++){
+  const pts=r.curves[i];const u=pt(pts[47]),v=pt(pts[53]);
+  if(Math.hypot(v.x-u.x,v.y-u.y)>4)node('line',{x1:u.x,y1:u.y,x2:v.x,y2:v.y,stroke:'#344b57','stroke-width':2.1,'marker-end':'url(#arr)'},panels.arrows);
+  const h=pt(curveMid(i));let g=node('g',{'data-handle':i,class:'curvehandle',tabindex:0,role:'button','aria-label':`${'ABCD'[i]}에서 ${'ABCD'[(i+1)%4]} 경로 굽힘 조절`},panels.handles);
+  node('circle',{cx:h.x,cy:h.y,r:22,fill:'transparent'},g);
+  node('rect',{x:h.x-7.5,y:h.y-7.5,width:15,height:15,rx:3,fill:'#fff',stroke:'#8977b4','stroke-width':2.4},g);
+  let tip=node('title',{},g);tip.textContent='끌어서 곡선을 자유롭게 변형';
+ }
+ cycle.pts.forEach((a,i)=>{const v=pt(a),fix=i===0||i===2;
+  const g=node('g',{'data-point':i,class:fix?'':'dot',tabindex:fix?-1:0,role:'button','aria-label':`${'ABCD'[i]} 상태 ${fix?'고정':'이동 가능'}`},panels.points);
+  node('circle',{cx:v.x,cy:v.y,r:24,fill:'transparent'},g);
+  node('circle',{cx:v.x,cy:v.y,r:17,fill:'#fff',stroke:fix?'#c1ccd2':'#b7dee7','stroke-width':3},g);
+  node('circle',{cx:v.x,cy:v.y,r:13,fill:fix?'#718b98':'#08758a'},g);
+  label('ABCD'[i],v.x,v.y+4.3,{'text-anchor':'middle','font-size':12.5,fill:'#fff','font-weight':850,'pointer-events':'none'},g);
+  const t=node('title',{},g);t.textContent=`${'ABCD'[i]}: V=${fmt(a.v,2)} L, P=${fmt(a.p,2)} kPa, T=${fmt(T(a),1)} K`;
+ });
+}
+function render(r){const stat=$('status');stat.classList.toggle('bad',!r.valid);stat.textContent=r.valid?'작동 가능한 열기관':r.crossed?'경로 교차':r.badHeat>0?'열원 조건 위반':r.W<=1e-6?'열기관 아님':'실현 불가능한 경로';
+ $('eta').textContent=r.valid?fmt(r.eta*100,1)+'%':'—';$('eta').style.color=r.valid?'var(--teal-d)':'#9eabb1';
+ $('effsub').textContent=r.valid?'카르노 상한 대비 '+fmt(r.eta/CARNOT*100,0)+'%':'유효한 순환에서만 효율 표시';
+ $('bar').style.width=(r.valid?cap(r.eta/CARNOT*100,0,100):0)+'%';
+ $('work').textContent=fmt(r.W,1);$('qin').textContent=fmt(r.Qin,1);$('qout').textContent=fmt(r.Qout,1);
+ $('conserve').textContent=`에너지 보존: ${fmt(r.Qin,2)} − ${fmt(r.Qout,2)} = ${fmt(r.W,2)} J`;
+ const alert=$('alert');alert.classList.toggle('bad',!r.valid);
+ if(r.crossed)alert.textContent='자기교차하는 순환은 이 탐구에서 제외합니다. 경로 굽힘이나 B·D를 조절해 주세요.';
+ else if(r.badHeat>0)alert.textContent=`열원이 600 K·400 K로 고정되어 있어 열이 잘못된 방향으로 흐르는 부분(${r.badHeat}개 미소 구간)이 있습니다. 붉은 경로를 수정해야 합니다.`;
+ else if(r.W<=1e-6)alert.textContent='외부에 한 순일이 양수가 아니어서 열기관으로 작동하지 않습니다.';
+ else if(!r.valid)alert.textContent='열역학 제2법칙의 카르노 상한을 만족하지 않는 경로입니다.';
+ else alert.textContent=`가능한 열기관입니다. 열원 엔트로피 증가량 ΔS = ${fmt(r.entropy,4)} J/K (0 이상).`;
+ $('tbl').replaceChildren();r.legs.forEach((a,i)=>{let tr=document.createElement('tr');for(const val of [`${'ABCD'[i]} → ${'ABCD'[(i+1)%4]}`,fmt(a.w,1),fmt(a.hi,1),fmt(a.ho,1)]){let t=document.createElement('td');t.textContent=val;tr.appendChild(t);}$('tbl').appendChild(tr);});
+ $('states').replaceChildren();cycle.pts.forEach((a,i)=>{const d=document.createElement('div');d.className='state';d.innerHTML=`<b>${'ABCD'[i]}</b> <span>${i%2===0?'(고정)':'(이동)'}</span><small>V ${fmt(a.v,2)} L · P ${fmt(a.p,1)} kPa<br>T ${fmt(T(a),1)} K</small>`;$('states').appendChild(d);});
+ if(edited&&r.valid&&r.eta>best+1e-7){best=r.eta;$('best').textContent=fmt(best*100,2)+'%';}
+}
+function refresh(){result=assess();draw(result);render(result);}
+function pointInGraph(ev){const mat=svg.getScreenCTM();if(!mat)return null;const s=svg.createSVGPoint();s.x=ev.clientX;s.y=ev.clientY;const q=s.matrixTransform(mat.inverse());return {v:cap(xfrom(q.x),lim.vlo+.01,lim.vhi-.01),p:cap(yfrom(q.y),lim.plo+.01,lim.phi-.01)};}
+function move(which,p){if(drag.kind==='point'){
+  const old=cycle.pts[which],dv=p.v-old.v,dp=p.p-old.p;
+  for(const i of [((which+3)%4),which])if(cycle.paths[i].kind==='free'){const c=cycle.paths[i].ctrl;c.v=cap(c.v+dv*.5,lim.vlo+.01,lim.vhi-.01);c.p=cap(c.p+dp*.5,lim.plo+.01,lim.phi-.01);}
+  cycle.pts[which]=p;
+ }else{
+  const i=which,a=cycle.pts[i],b=cycle.pts[(i+1)%4];
+  const ctrl={v:cap(2*p.v-(a.v+b.v)/2,lim.vlo+.01,lim.vhi-.01),p:cap(2*p.p-(a.p+b.p)/2,lim.plo+.01,lim.phi-.01)};
+  cycle.paths[i]={kind:'free',ctrl};
+ }
+ edited=true;document.querySelectorAll('[data-preset]').forEach(x=>x.classList.remove('active'));
+ refresh();
+}
+svg.addEventListener('pointerdown',e=>{let v=e.target.closest?.('[data-point], [data-handle]');if(!v)return;
+ const isPoint=v.hasAttribute('data-point'),index=Number(isPoint?v.getAttribute('data-point'):v.getAttribute('data-handle'));
+ if(isPoint&&(index===0||index===2))return;
+ drag={kind:isPoint?'point':'handle',index};e.preventDefault();try{svg.setPointerCapture(e.pointerId);}catch(_){}
+ const p=pointInGraph(e);if(p)move(index,p);
+});
+svg.addEventListener('pointermove',e=>{if(!drag)return;const p=pointInGraph(e);if(p)move(drag.index,p);});
+function end(e){drag=null;try{if(svg.hasPointerCapture(e.pointerId))svg.releasePointerCapture(e.pointerId);}catch(_){}}
+svg.addEventListener('pointerup',end);svg.addEventListener('pointercancel',end);
+svg.addEventListener('keydown',e=>{const v=e.target.closest?.('[data-point], [data-handle]');if(!v)return;
+ const point=v.hasAttribute('data-point'),index=Number(point?v.getAttribute('data-point'):v.getAttribute('data-handle'));if(point&&(index===0||index===2))return;
+ let dv=0,dp=0;switch(e.key){case'ArrowLeft':dv=-.075;break;case'ArrowRight':dv=.075;break;case'ArrowUp':dp=5;break;case'ArrowDown':dp=-5;break;default:return;}
+ e.preventDefault();const base=point?cycle.pts[index]:curveMid(index);drag={kind:point?'point':'handle',index};move(index,{v:cap(base.v+dv,lim.vlo+.01,lim.vhi-.01),p:cap(base.p+dp,lim.plo+.01,lim.phi-.01)});drag=null;
+ (point?panels.points:panels.handles).querySelector(`[data-${point?'point':'handle'}="${index}"]`)?.focus();
+});
+function load(name){start=name;edited=false;cycle=preset(name);document.querySelectorAll('[data-preset]').forEach(b=>b.classList.toggle('active',b.dataset.preset===name));refresh();}
+document.querySelectorAll('[data-preset]').forEach(b=>b.addEventListener('click',()=>load(b.dataset.preset)));
+$('reset').addEventListener('click',()=>load(start));
+$('straight').addEventListener('click',()=>{edited=true;cycle.paths=Array.from({length:4},(_,i)=>({kind:'free',ctrl:{v:(cycle.pts[i].v+cycle.pts[(i+1)%4].v)/2,p:(cycle.pts[i].p+cycle.pts[(i+1)%4].p)/2}}));document.querySelectorAll('[data-preset]').forEach(b=>b.classList.remove('active'));refresh();});
+$('clearBest').addEventListener('click',()=>{best=-Infinity;$('best').textContent='—';refresh();});
+$('guide').addEventListener('change',drawIsotherms);
+plotGrid();drawIsotherms();refresh();
+})();
+</script>
+</body>
+</html>
